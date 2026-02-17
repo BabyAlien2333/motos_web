@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Motos Pro{% endblock %}</title>
+
+    {% load i18n %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            color: #eee;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,0,0,0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s ease;
+
+/* Texto dentro de cards */
+.card h4,
+.card h5,
+.card p {
+    color: #720a0a;
+}
+
+.marca {
+    color: #ff3c3c;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.precio {
+    color: #00ff88;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(255,0,0,0.6);
+        }
+
+        .img-container {
+            overflow: hidden;
+        }
+
+        .moto-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: 0.4s ease;
+        }
+
+        .card:hover .moto-img {
+            transform: scale(1.08);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #000;
+            border-bottom: 2px solid #ff0000;
+        }
+
+        .navbar-brand {
+            color: #ff0000 !important;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        /* Botones */
+        .btn-custom {
+            background: #ff0000;
+            border: none;
+            color: white;
+            transition: 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .btn-custom:hover {
+            background: #ff1a1a;
+            transform: scale(1.05);
+            box-shadow:
+                0 0 10px rgba(255, 0, 0, 0.6),
+                0 0 20px rgba(255, 0, 0, 0.8),
+                0 0 40px rgba(255, 0, 0, 0.6);
+        }
+
+        /* Formularios */
+        .form-control,
+        .form-select {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #eee;
+            border: 1px solid rgba(255, 0, 0, 0.4);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Animación */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Login Box */
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+        }
+
+.card-title,
+.card-text,
+.card-body p,
+.card-body small {
+    color: #ffffff;
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    border: 1px solid #ffc107;
+}
+
+
+
+/* Marca roja */
+.marca {
+    color: #ff3c3c !important;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Precio verde */
+.precio {
+    color: #00ff88 !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-shadow: 0 0 8px rgba(0,255,136,0.7);
+}
+
+/* Forzar texto visible SOLO dentro de las cards */
+.card .text-muted,
+.card .text-body-secondary,
+.card small,
+.card p {
+    color: #eaeaea !important;
+}
+
+/* Marca */
+.marca {
+    color: #ff3c3c !important;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.modelo {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+
+
+/* Precio */
+.precio {
+    color: #00ff88 !important;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-shadow: 0 0 6px rgba(0,255,136,0.6);
+}
+
+.modelo {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* CONTENEDOR GENERAL */
+.registro-wrapper {
+    min-height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CARD */
+.registro-card {
+    background: rgba(20, 20, 20, 0.95);
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 25px;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.25);
+}
+
+/* TITULO */
+.titulo-registro {
+    color: #ff3c3c;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* LABEL */
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #ddd;
+}
+
+/* INPUTS */
+.registro-card input {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.registro-card input:focus {
+    border-color: #ff3c3c;
+    box-shadow: 0 0 12px rgba(255, 60, 60, 0.6);
+    outline: none;
+}
+
+/* ERRORES */
+.form-error {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+/* BOTÓN */
+.btn-registro {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(45deg, #ff3c3c, #ff0000);
+    font-weight: bold;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.btn-registro:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+/* LINK LOGIN */
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #ccc;
+}
+
+.login-link a {
+    color: #00ff88;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+    </style>
+</head>
+
+<body>
+
+{% if request.path != '/accounts/login/' %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+
+        <a class="navbar-brand" href="/">MOTOS PRO</a>
+
+        <div class="ms-auto d-flex align-items-center gap-3">
+
+            <!-- Selector idioma -->
+            <form action="{% url 'set_language' %}" method="post">
+                {% csrf_token %}
+                <select name="language"
+                        class="form-select form-select-sm bg-dark text-light border-danger"
+                        onchange="this.form.submit()">
+                    <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>🇪🇸</option>
+                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧</option>
+                    <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>🇫🇷</option>
+                </select>
+            </form>
+
+            {% if user.is_authenticated %}
+
+                <span class="text-white">
+                    👤 {{ user.username }}
+                </span>
+
+                {% if user.is_superuser %}
+                    <span class="badge bg-danger px-3 py-2">
+                        👑 BOSS
+                    </span>
+                    <a href="/admin/" class="btn btn-sm btn-custom">
+                        Panel
+                    </a>
+                {% endif %}
+
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-sm btn-outline-light">
+                        Cerrar sesión
+                    </button>
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-sm btn-custom">
+                    Iniciar sesión
+                </a>
+
+            {% endif %}
+
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}{{ moto.marca }} {{ moto.modelo }}{% endblock %}
+
+{% block content %}
+
+<div class="main-container">
+    <div class="card p-4">
+
+        <!-- Marca y modelo -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="text-danger fw-bold">{{ moto.marca }}</h2>
+                <h4 class="text-light">{{ moto.modelo }}</h4>
+            </div>
+        </div>
+
+        <!-- Imagen -->
+        {% if moto.imagen %}
+        <div class="text-center mb-3">
+            <img src="{{ moto.imagen.url }}" 
+                 class="img-fluid rounded shadow" 
+                 style="max-height:400px; object-fit:cover;">
+        </div>
+        {% endif %}
+
+        <!-- Descripción -->
+        {% if moto.descripcion %}
+        <p class="text-secondary">
+            {{ moto.descripcion }}
+        </p>
+        {% endif %}
+
+        <!-- Promedio estrellas -->
+        <div class="mb-2 text-warning">
+            ⭐ {{ moto.promedio_estrellas }} / 5
+        </div>
+
+        <hr>
+
+        <!-- Especificaciones -->
+        <div class="mb-3">
+            <span class="badge bg-dark me-2">Año: {{ moto.anio }}</span>
+            <span class="badge bg-dark me-2">{{ moto.cilindrada }} cc</span>
+            <span class="badge bg-dark">{{ moto.potencia }} HP</span>
+        </div>
+
+        <!-- Precio -->
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div id="precio" class="fs-4 fw-bold text-success">
+                $ {{ moto.precio|intcomma }} COP
+            </div>
+            <button class="btn btn-outline-light btn-sm" onclick="convertir()">
+                USD
+            </button>
+        </div>
+
+        <a href="/" class="btn btn-custom mb-4">Volver</a>
+
+        <!-- Reseñas -->
+        <h4 class="mt-4">Reseñas</h4>
+
+        {% for resena in moto.resenas.all %}
+        <div class="card bg-dark text-light p-3 mb-3">
+            <strong>{{ resena.usuario }}</strong>
+
+            <div class="text-warning">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= resena.estrellas %}
+                        ⭐
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <p class="mt-2">{{ resena.comentario }}</p>
+
+            {% if resena.imagen %}
+                <img src="{{ resena.imagen.url }}" 
+                     class="img-fluid rounded mt-2" 
+                     style="max-width:200px;">
+            {% endif %}
+        </div>
+        {% empty %}
+            <p class="text-muted">No hay reseñas todavía.</p>
+        {% endfor %}
+
+        <!-- FORMULARIO SOLO PARA USUARIOS LOGEADOS -->
+        {% if user.is_authenticated %}
+            <h4 class="mt-4">Deja tu reseña</h4>
+
+            <form method="POST" action="{% url 'agregar_resena' moto.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <textarea name="comentario" 
+                          placeholder="Escribe tu opinión..." 
+                          rows="3" 
+                          class="form-control mb-2" 
+                          required></textarea>
+
+                <select name="estrellas" class="form-select mb-2" required>
+                    <option value="">Calificación</option>
+                    <option value="1">⭐ 1</option>
+                    <option value="2">⭐⭐ 2</option>
+                    <option value="3">⭐⭐⭐ 3</option>
+                    <option value="4">⭐⭐⭐⭐ 4</option>
+                    <option value="5">⭐⭐⭐⭐⭐ 5</option>
+                </select>
+
+                <input type="file" name="imagen" class="form-control mb-2">
+
+                <button type="submit" class="btn btn-custom w-100">
+                    Publicar
+                </button>
+            </form>
+
+        {% else %}
+            <div class="alert alert-warning mt-3">
+                Debes <a href="{% url 'login' %}">iniciar sesión</a> para dejar una reseña.
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+let enUSD = false;
+let precioCOP = {{ moto.precio }};
+
+function convertir() {
+    fetch("/tasa-cambio/")
+        .then(response => response.json())
+        .then(data => {
+            if (!enUSD) {
+                let precioUSD = precioCOP * data.usd;
+                document.getElementById("precio").innerHTML =
+                    "$ " + precioUSD.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + " USD";
+                enUSD = true;
+            } else {
+                document.getElementById("precio").innerHTML =
+                    "$ " + precioCOP.toLocaleString("es-CO") + " COP";
+                enUSD = false;
+            }
+        })
+        .catch(error => console.log("Error:", error));
+}
+</script>
+
+{% endblock %}
+

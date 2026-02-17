@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Registro | Motos Pro{% endblock %}
+
+{% block content %}
+
+<div class="registro-wrapper">
+
+    <div class="registro-card">
+
+        <h2 class="titulo-registro text-center">
+            Crear Cuenta
+        </h2>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- Usuario -->
+            <div class="form-group">
+                <label>Usuario</label>
+                {{ form.username }}
+                <small class="form-error">{{ form.username.errors }}</small>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                {{ form.email }}
+                <small class="form-error">{{ form.email.errors }}</small>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label>Contraseña</label>
+                {{ form.password1 }}
+                <small class="form-error">{{ form.password1.errors }}</small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label>Confirmar contraseña</label>
+                {{ form.password2 }}
+                <small class="form-error">{{ form.password2.errors }}</small>
+            </div>
+
+            <button type="submit" class="btn btn-registro">
+                Registrarse
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            ¿Ya tienes cuenta?
+            <a href="{% url 'login' %}">Inicia sesión</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

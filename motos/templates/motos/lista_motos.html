@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Motos Pro{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    
+    <h1 class="titulo">🔥 Lista de Motos 🔥</h1>
+
+    <div class="row">
+        {% for moto in motos %}
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card p-3 h-100">
+
+                <div class="img-container mb-3">
+                    {% if moto.imagen %}
+                        <img src="{{ moto.imagen.url }}" class="moto-img">
+                    {% else %}
+                        <img src="https://via.placeholder.com/400x250?text=Moto" class="moto-img">
+                    {% endif %}
+                </div>
+
+                <!-- MARCA -->
+                <h4 class="marca">{{ moto.marca }}</h4>
+
+                <!-- MODELO (CORREGIDO) -->
+                <h5 class="modelo text-light">{{ moto.modelo }}</h5>
+
+                <!-- AÑO (CORREGIDO) -->
+                <p class="text-light">
+                    Año: {{ moto.anio }}
+                </p>
+
+                <!-- PRECIO -->
+                <p class="precio">
+                    $ {{ moto.precio|intcomma }} COP
+                </p>
+
+                <a href="{% url 'detalle_moto' moto.id %}" 
+                   class="btn btn-custom w-100 mt-auto">
+                    Ver Detalles
+                </a>
+
+            </div>
+        </div>
+
+        {% empty %}
+        <p class="text-center text-muted">
+            No hay motos registradas.
+        </p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+
